@@ -74,16 +74,23 @@
 EMMLi <- function(corr, N_sample, mod, saveAs){
   
   # Check inputs
-  stopifnot(is.numeric(corr), dim(corr)[1] == dim(corr)[2], is.numeric(N_sample), N_sample > 0, is.character(saveAs))
+  if(!is.numeric(corr) & !is.data.frame(corr)){
+    stop('corr should be a (square) matrix or data frame.')
+  }
+
+  if(!dim(corr)[1] == dim(corr)[2]) stop('corr should be a square matrix')
+
+  stopifnot(is.numeric(N_sample), N_sample > 0, is.character(saveAs))
+
   # Check that models are given as integers
-  if (!all(sapply(mod[, -1], function(i) i %% 1 == 0) | is.na(mod[, -1]))) stop('mod should contain a column of names and then columns of integers defining models')
-  if (dim(corr)[1] != dim(corr)[2]) stop('corr should be a square matrix.')
+  #if (!all(sapply(mod[, -1], function(i) i %% 1 == 0) | is.na(mod[, -1]))) stop('mod should contain a column of names and then columns of integers defining models')
+  #if (dim(corr)[1] != dim(corr)[2]) stop('corr should be a square matrix.')
   
   # Create null model
   mod$No.modules = 1
 
   # Create varlist variable
-  varlist = paste0('mod$', names(mod)[-1])
+  varlist = paste0('mod$', names(mod)[-(1:2)])
 
   # make the upper triangle of corr NA, we only use the lower triangle.
   corr[upper.tri(corr, diag = T)] = NA
@@ -92,9 +99,10 @@ EMMLi <- function(corr, N_sample, mod, saveAs){
   corr_list = (as.array(corr[!is.na(corr)])) 
   symmet = corr
 
-  # a symmetric matrix formed from the coefficient matrix, only used to find intermodular coefficients.
-  
+  # a symmetric matrix formed from the coefficient matrix, only used to find intermodular coefficients.  
   symmet[upper.tri(symmet)] = t(symmet)[upper.tri(symmet)] 
+
+
   all_modules = list()
   for(colnam in varlist){
     col = array(eval(parse(text = colnam)))
