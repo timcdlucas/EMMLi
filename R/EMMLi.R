@@ -78,19 +78,27 @@ EMMLi <- function(corr, N_sample, mod, saveAs){
     stop('corr should be a (square) matrix or data frame.')
   }
 
+  if(!(is.factor(mod[, 1]) | is.character(mod[, 1]))){
+    stop('The first column of mod should be landmark names (factor or character).')
+  }
+  
+  if(!all(sapply(mod[, -1], is.integer))){
+    stop('mod should contain landmark names in the first column and integers in subsequent columns')
+  }
+
   if(!dim(corr)[1] == dim(corr)[2]) stop('corr should be a square matrix')
 
   stopifnot(is.numeric(N_sample), N_sample > 0, is.character(saveAs))
 
   # Check that models are given as integers
-  #if (!all(sapply(mod[, -1], function(i) i %% 1 == 0) | is.na(mod[, -1]))) stop('mod should contain a column of names and then columns of integers defining models')
-  #if (dim(corr)[1] != dim(corr)[2]) stop('corr should be a square matrix.')
+  if (!all(sapply(mod[, -1], function(i) i %% 1 == 0) | is.na(mod[, -1]))) stop('mod should contain a column of names and then columns of integers defining models')
+  if (dim(corr)[1] != dim(corr)[2]) stop('corr should be a square matrix.')
   
   # Create null model
   mod$No.modules = 1
 
   # Create varlist variable
-  varlist = paste0('mod$', names(mod)[-(1:2)])
+  varlist = paste0('mod$', names(mod)[-1])
 
   # make the upper triangle of corr NA, we only use the lower triangle.
   corr[upper.tri(corr, diag = T)] = NA
@@ -108,7 +116,7 @@ EMMLi <- function(corr, N_sample, mod, saveAs){
     col = array(eval(parse(text = colnam)))
     
     # na.omit() used to remove unclassified landmarks.
-    modNF = stats::na.omit(cbind(mod[, 1], col)) 
+    modNF = stats::na.omit(cbind(1:nrow(mod), col)) 
     w = unique(modNF[, 2])
     
     modules = list()
