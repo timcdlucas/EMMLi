@@ -3,7 +3,7 @@ Type: Package
 Title: EMMLi: A Maximum Likelihood Approach To The Analysis Of Modularity
 Version: 0.0.1.9999
 Date: 2016-05-31
-Author: Anjali Goswami, Tim Lucas, Prabu Sivasubramaniam
+Author: Anjali Goswami, Tim Lucas, Prabu Sivasubramaniam, John Finarelli
 Maintainer: Anjali Goswami <a.goswami@ucl.ac.uk>
 Description: Fit models of modularity to morphlogical landmarks. Perform model 
   selection on results. Fit models with a single within-module correlation or

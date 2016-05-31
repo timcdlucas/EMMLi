@@ -6,7 +6,8 @@
 ##  					mod = landmark classification, 
 ##				 saveAs = specify where to save the results.
 ##			  
-##  Output: 
+##  Output: A list containing two elements. The first (results) gives the AIC results 
+##          for each model. The second (rho) gives the within and between module correlations.
 ##          Additionally an optional .csv file, resembling the AIC worksheet. 
 ##
 ##  Prabu (p.siva@ucl.ac.uk)
@@ -20,7 +21,7 @@
 #' Calculates the AICc values of different models of modularity.
 #'
 ####  Details        #####
-#'  The publication describing this analysis is A. Goswami1 and J. Finarelli
+#'  The publication describing this analysis is A. Goswami and J. Finarelli
 #'    (2016) EMMLi: A maximum likelihood approach to the analysis of modularity.
 #'    Evolution \url{http://onlinelibrary.wiley.com/doi/10.1111/evo.12956/abstract}.
 #'
@@ -367,6 +368,6 @@ EMMLi <- function(corr, N_sample, mod, saveAs = NULL, abs = TRUE ){
     }
   }
 
-  return(list(results = results, rho = rholist))
+  return(invisible(list(results = results, rho = rholist)))
 
 }
