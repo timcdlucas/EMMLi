@@ -43,7 +43,7 @@
 #'@param corr Lower triangle or full correlation matrix. n x n square matrix for n landmarks.
 #'@param N_sample The number of samples used
 #'@param mod A data frame defining the models. The first column should contain the landmark names. Subsequent columns should define which landmarks are contained with which module. If a landmark should be ignored for a specific model, the element should be NA.
-#'@param saveAs A character string defining the filename and path for where to save output.
+#'@param saveAs A character string defining the filename and path for where to save output. If NULL, the output is not saved to file.
 #'@param abs Logical denoting whether absolute values should be used. TODO anjali
 #'
 #'@export
@@ -70,9 +70,12 @@
 #'  EMMLi(dat, 20, mod1, file)
 #'
 #'  unlink(file)
+#'
+#'  # run EMMLi without writing output
+#'  EMMLi(dat, 20, mod1)
 
 
-EMMLi <- function(corr, N_sample, mod, saveAs, abs = TRUE ){
+EMMLi <- function(corr, N_sample, mod, saveAs = NULL, abs = TRUE ){
   
   # Check inputs
   if(!is.numeric(corr) & !is.data.frame(corr)){
@@ -94,8 +97,9 @@ EMMLi <- function(corr, N_sample, mod, saveAs, abs = TRUE ){
   if(!dim(corr)[1] == dim(corr)[2]) stop('corr should be a square matrix')
 
   # Check other parameters
-  stopifnot(is.numeric(N_sample), N_sample > 0, is.character(saveAs), is.logical(abs))  
+  stopifnot(is.numeric(N_sample), N_sample > 0, is.logical(abs))  
 
+  if(!is.null(saveAs)){}
 
 
   # Create null model
@@ -185,6 +189,7 @@ EMMLi <- function(corr, N_sample, mod, saveAs, abs = TRUE ){
       r = unlist(unname(all_modules[[m]][g]))
       n_value = length(r)
 
+      # Calculate z_r differently depending on abs argument in original call.
       if(abs){
         z_r = 0.5 * log((1 + abs(r)) / (1 - abs(r)))
       } else if(!abs) {
@@ -358,12 +363,17 @@ EMMLi <- function(corr, N_sample, mod, saveAs, abs = TRUE ){
   rholist_name = unlist(strsplit(rholist_name, split = 'mod\\$'))
   rholist_name = unlist(strsplit(rholist_name, split = '1$'))
   
-  utils::write.table(results, file = saveAs, row.names = TRUE, col.names = NA, sep = ",")
-  cat("\n\n", file = saveAs, append = TRUE)
-  for(q in 1:length(rho_output)){
-    cat(rholist_name[q], "\n", file = saveAs, append = TRUE)
-    write(paste(c('', colnames(rho_output[[q]])), collapse = ','), saveAs, append = TRUE)
-    write.table(rho_output[q], saveAs, row.names = TRUE, col.names = FALSE, sep = ",", append = TRUE)
-    cat("\n", file = saveAs, append = TRUE)
+  if(!is.null(saveAs)){
+    utils::write.table(results, file = saveAs, row.names = TRUE, col.names = NA, sep = ",")
+    cat("\n\n", file = saveAs, append = TRUE)
+    for(q in 1:length(rho_output)){
+      cat(rholist_name[q], "\n", file = saveAs, append = TRUE)
+      write(paste(c('', colnames(rho_output[[q]])), collapse = ','), saveAs, append = TRUE)
+      write.table(rho_output[q], saveAs, row.names = TRUE, col.names = FALSE, sep = ",", append = TRUE)
+      cat("\n", file = saveAs, append = TRUE)
+    }
   }
+
+  return(list(results = results, rho_output = rho_output))
+
 }

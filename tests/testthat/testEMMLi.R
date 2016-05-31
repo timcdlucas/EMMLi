@@ -203,3 +203,50 @@ test_that('abs argument does not break EMMLi output.', {
 })
 
 
+
+
+
+
+test_that('EMMLi outputs correctly.', {
+
+  # saveAs = NULL -> only return
+  # saveAs = directory -> return values and save values
+
+  set.seed(1)
+  file <- paste0(tempdir(), 'EMMLiTest.csv')
+  
+  dat <- matrix(runif(36, -1, 1), ncol = 6, nrow = 6)
+  diag(dat) <- 1
+
+  mod1 <- data.frame(landmarks = letters[1:6], 
+               modelA = rep(c(1, 2), each = 3),
+               modelB = rep(c(1,2), 3),
+               modelC = rep(c(1:3), 2)) 
+
+
+  out <- EMMLi(dat, 20, mod1, saveAs = NULL, abs = FALSE)
+
+  expect_false(file.exists(file))
+
+  out2 <- EMMLi(dat, 20, mod1, saveAs = file, abs = FALSE)
+
+  expect_true(file.exists(file))
+  xx <- read.csv(file)
+
+  expect_true(exists('xx'))
+
+  # Bit of a mess because the csv is multiple tables.
+  # So extract the top table only
+  top <- do.call(cbind, lapply(xx[1:(which(xx[, 1] == '')[1] - 2), -1], function(x) as.numeric(as.character(x))))
+
+
+
+  expect_equal(out, out2)
+  expect_equivalent(top, out$results)
+
+  unlink(file)
+
+})
+
+
+
