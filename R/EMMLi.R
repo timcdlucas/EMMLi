@@ -6,39 +6,23 @@
 ##  					mod = landmark classification, 
 ##				 saveAs = specify where to save the results.
 ##			  
-##  Output: A .csv file, resembling the AIC worksheet. 
+##  Output: 
+##          Additionally an optional .csv file, resembling the AIC worksheet. 
 ##
 ##  Prabu (p.siva@ucl.ac.uk)
 #################################################################
 
-##############
-# The MIT License (MIT)
 
-# Copyright (c) 2015 Pratheesan Sivasubramaniam
-
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
-
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-#############
-
-
+##### Title          #####
 #' Evaluating modularity with maximum likelihood
 #'
+####  Description    #####
 #' Calculates the AICc values of different models of modularity.
+#'
+####  Details        #####
+#'  The publication describing this analysis is A. Goswami1 and J. Finarelli
+#'    (2016) EMMLi: A maximum likelihood approach to the analysis of modularity.
+#'    Evolution \url{http://onlinelibrary.wiley.com/doi/10.1111/evo.12956/abstract}.
 #'
 #'@param corr Lower triangle or full correlation matrix. n x n square matrix for n landmarks.
 #'@param N_sample The number of samples used
@@ -47,7 +31,11 @@
 #'@param abs Logical denoting whether absolute values should be used. TODO anjali
 #'
 #'@export
-#'@return NULL. The output is saved to the file defined by the saveAs argument.
+#'@return A list containing two elements. The first (results) gives the AIC results for each model.
+#'  The second (rho) gives the within and between module correlations.
+#'  Optionally, the output is saved to the file defined by the saveAs argument with only models with a 
+#'  posterior probability > 0.01 being saved.
+#'
 #'@examples
 #'  set.seed(1)
 #'
@@ -346,7 +334,6 @@ EMMLi <- function(corr, N_sample, mod, saveAs = NULL, abs = TRUE ){
   h = 1
 
   for (i in 1:(length(logp))){
-    #print(i)
     for (j in 1:length(logp[[i]])){
       
       rholist[h] = logp[[i]][j]
@@ -355,10 +342,16 @@ EMMLi <- function(corr, N_sample, mod, saveAs = NULL, abs = TRUE ){
     }
     
   } 
-  
+
+  # Sort names for return value
+  rho_names = names(Post_Pob)
+  rho_names = unlist(strsplit(rho_names, split = 'mod\\$'))
+  rho_names = unlist(strsplit(rho_names, split = '1$'))
+  names(rholist) <- rho_names
+
+  # build output for the csv.  
   rho_output = rholist[which(Post_Pob > 0.01)]
-  
- 
+
   rholist_name = names(which(Post_Pob > 0.01))
   rholist_name = unlist(strsplit(rholist_name, split = 'mod\\$'))
   rholist_name = unlist(strsplit(rholist_name, split = '1$'))
@@ -374,6 +367,6 @@ EMMLi <- function(corr, N_sample, mod, saveAs = NULL, abs = TRUE ){
     }
   }
 
-  return(list(results = results, rho_output = rho_output))
+  return(list(results = results, rho = rholist))
 
 }

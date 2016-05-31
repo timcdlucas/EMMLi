@@ -18,10 +18,18 @@ EMMLi(corr, N_sample, mod, saveAs = NULL, abs = TRUE)
 \item{abs}{Logical denoting whether absolute values should be used. TODO anjali}
 }
 \value{
-NULL. The output is saved to the file defined by the saveAs argument.
+A list containing two elements. The first (results) gives the AIC results for each model.
+ The second (rho) gives the within and between module correlations.
+ Optionally, the output is saved to the file defined by the saveAs argument with only models with a 
+ posterior probability > 0.01 being saved.
 }
 \description{
 Calculates the AICc values of different models of modularity.
+}
+\details{
+The publication describing this analysis is A. Goswami1 and J. Finarelli
+   (2016) EMMLi: A maximum likelihood approach to the analysis of modularity.
+   Evolution \url{http://onlinelibrary.wiley.com/doi/10.1111/evo.12956/abstract}.
 }
 \examples{
  set.seed(1)

@@ -7,7 +7,7 @@
 \title{EMMLi: A Maximum Likelihood Approach To The Analysis Of Modularity}
 \description{
 The only function is \code{\link{EMMLi}}. This function takes a covariance
- matrix and a data frame that defines the which module each landmark is a 
+ matrix and a data frame that defines which module each landmark is 
  a part of for each model.
 }
 \details{
