@@ -82,7 +82,12 @@ EMMLi <- function(corr, N_sample, mod, saveAs){
     stop('The first column of mod should be landmark names (factor or character).')
   }
   
-  if(!all(sapply(mod[, -1], is.integer))){
+
+  # Test that elements in mod, after the first column, are either integers or NAs
+
+  isIntegers <- na.omit(as.vector(abs(mod[, -1] - round(mod[, -1])) < .Machine$double.eps^0.5))
+
+  if(!all(isIntegers)){
     stop('mod should contain landmark names in the first column and integers in subsequent columns')
   }
 
