@@ -1,22 +1,21 @@
-Package: procrustespkg
+Package: EMMLi
 Type: Package
-Title: Proctustes Analysis for Paleobiology
-Version: 0.1.1.9999
-Date: 2016-04-05
+Title: EMMLi: A Maximum Likelihood Approach To The Analysis Of Modularity
+Version: 0.0.1.9999
+Date: 2016-05-31
 Author: Tim Lucas, Prabu Sivasubramaniam, Anjali Goswami
-Maintainer: Tim Lucas <timcdlucas@gmail.com>
-Description: Calculate procrustes alignments and correlation and covariance matrices of 3D landmarks.
-  Perform tests of models of modularity of landmarks using EMMLi.
+Maintainer: Anjali Goswami <a.goswami@ucl.ac.uk>
+Description: Fit models of modularity to morphlogical landmarks. Perform model 
+  selection on results. Fit models with a single within-module correlation or
+  with seperate within-module correlations fitted to each module.
 License: None
 Imports:
     stats,
     utils
 Suggests:
     knitr,
-    testthat,
-    abind,
-    rgl
+    testthat
 VignetteBuilder: knitr
 LazyData: true
-URL: https://bitbucket.org/timcdlucas/procrustespkg
+URL: https://bitbucket.org/timcdlucas/emmli
 RoxygenNote: 5.0.1
