@@ -27,7 +27,7 @@ A list containing two elements. The first (results) gives the AIC results for ea
 Calculates the AICc values of different models of modularity.
 }
 \details{
-The publication describing this analysis is A. Goswami1 and J. Finarelli
+The publication describing this analysis is A. Goswami and J. Finarelli
    (2016) EMMLi: A maximum likelihood approach to the analysis of modularity.
    Evolution \url{http://onlinelibrary.wiley.com/doi/10.1111/evo.12956/abstract}.
 }
