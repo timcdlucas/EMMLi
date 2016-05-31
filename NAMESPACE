@@ -3,4 +3,5 @@
 export(EMMLi)
 importFrom(stats,complete.cases)
 importFrom(stats,cov)
+importFrom(stats,na.omit)
 importFrom(utils,write.table)
