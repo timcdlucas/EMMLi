@@ -4,7 +4,7 @@
 \alias{EMMLi}
 \title{Evaluating modularity with maximum likelihood}
 \usage{
-EMMLi(corr, N_sample, mod, saveAs)
+EMMLi(corr, N_sample, mod, saveAs, abs = TRUE)
 }
 \arguments{
 \item{corr}{Lower triangle or full correlation matrix. n x n square matrix for n landmarks.}
@@ -14,6 +14,8 @@ EMMLi(corr, N_sample, mod, saveAs)
 \item{mod}{A data frame defining the models. The first column should contain the landmark names. Subsequent columns should define which landmarks are contained with which module. If a landmark should be ignored for a specific model, the element should be NA.}
 
 \item{saveAs}{A character string defining the filename and path for where to save output.}
+
+\item{abs}{Logical denoting whether absolute values should be used. TODO anjali}
 }
 \value{
 NULL. The output is saved to the file defined by the saveAs argument.

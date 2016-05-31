@@ -38,7 +38,7 @@ test_that('EMMLi runs and creates output.', {
 })
 
 
-test_that('EMMLi can take mod with numbers in columns.', {
+test_that('EMMLi can take mod with numbers in column names.', {
 
   set.seed(1)
   file <- paste0(tempdir(), 'EMMLiTest.csv')
@@ -151,5 +151,55 @@ test_that('EMMLi can take mod with NAs.', {
 
 
 
+
+
+test_that('abs argument does not break EMMLi output.', {
+
+  set.seed(1)
+  file <- paste0(tempdir(), 'EMMLiTest.csv')
+  
+  dat <- matrix(runif(36, -1, 1), ncol = 6, nrow = 6)
+  diag(dat) <- 1
+
+  mod1 <- data.frame(landmarks = letters[1:6], 
+               modelA = rep(c(1, 2), each = 3),
+               modelB = rep(c(1,2), 3),
+               modelC = rep(c(1:3), 2)) 
+
+
+  EMMLi(dat, 20, mod1, file, abs = FALSE)
+
+  expect_true(file.exists(file))
+  
+  xx <- read.csv(file)
+
+  expect_true(exists('xx'))
+
+  # Bit of a mess because the csv is multiple tables.
+  # So extract the top table only
+  top <- xx[1:(which(xx[, 1] == '')[1] - 2), ]
+
+  expect_true(sum(top$dAICc == 0) == 1)
+  expect_true(all(as.character(top$dAICc) >= 0))
+  expect_true(all(as.character(top$Model_l) >= 0))
+  expect_true(all(as.character(top$Post_Pob) >= 0))
+  expect_true(all(as.character(top$AICc) >= 0))
+
+
+  # Should give different output to abs = TRUE
+
+
+  EMMLi(dat, 20, mod1, file)
+
+  expect_true(file.exists(file))
+  
+  xx2 <- read.csv(file)
+
+
+  expect_false(identical(xx[1:9, -1], xx2[1:9, -1]))
+
+  unlink(file)
+
+})
 
 

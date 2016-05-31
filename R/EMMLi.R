@@ -44,6 +44,7 @@
 #'@param N_sample The number of samples used
 #'@param mod A data frame defining the models. The first column should contain the landmark names. Subsequent columns should define which landmarks are contained with which module. If a landmark should be ignored for a specific model, the element should be NA.
 #'@param saveAs A character string defining the filename and path for where to save output.
+#'@param abs Logical denoting whether absolute values should be used. TODO anjali
 #'
 #'@export
 #'@return NULL. The output is saved to the file defined by the saveAs argument.
@@ -71,7 +72,7 @@
 #'  unlink(file)
 
 
-EMMLi <- function(corr, N_sample, mod, saveAs){
+EMMLi <- function(corr, N_sample, mod, saveAs, abs = TRUE ){
   
   # Check inputs
   if(!is.numeric(corr) & !is.data.frame(corr)){
@@ -81,7 +82,6 @@ EMMLi <- function(corr, N_sample, mod, saveAs){
   if(!(is.factor(mod[, 1]) | is.character(mod[, 1]))){
     stop('The first column of mod should be landmark names (factor or character).')
   }
-  
 
   # Test that elements in mod, after the first column, are either integers or NAs
 
@@ -93,12 +93,11 @@ EMMLi <- function(corr, N_sample, mod, saveAs){
 
   if(!dim(corr)[1] == dim(corr)[2]) stop('corr should be a square matrix')
 
-  stopifnot(is.numeric(N_sample), N_sample > 0, is.character(saveAs))
+  # Check other parameters
+  stopifnot(is.numeric(N_sample), N_sample > 0, is.character(saveAs), is.logical(abs))  
 
-  # Check that models are given as integers
-  if (!all(sapply(mod[, -1], function(i) i %% 1 == 0) | is.na(mod[, -1]))) stop('mod should contain a column of names and then columns of integers defining models')
-  if (dim(corr)[1] != dim(corr)[2]) stop('corr should be a square matrix.')
-  
+
+
   # Create null model
   mod$No.modules = 1
 
@@ -185,7 +184,12 @@ EMMLi <- function(corr, N_sample, mod, saveAs){
     for(g in seq((length(all_modules[[m]])))){
       r = unlist(unname(all_modules[[m]][g]))
       n_value = length(r)
-      z_r = 0.5 * log((1 + abs(r)) / (1 - abs(r)))
+
+      if(abs){
+        z_r = 0.5 * log((1 + abs(r)) / (1 - abs(r)))
+      } else if(!abs) {
+        z_r = 0.5 * log((1 + r) / (1 - r))
+      }
       n = N_sample 
       var = 1 / (n - 3)
       
