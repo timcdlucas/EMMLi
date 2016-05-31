@@ -4,7 +4,7 @@
 \alias{EMMLi}
 \title{Evaluating modularity with maximum likelihood}
 \usage{
-EMMLi(corr, N_sample, mod, saveAs, abs = TRUE)
+EMMLi(corr, N_sample, mod, saveAs = NULL, abs = TRUE)
 }
 \arguments{
 \item{corr}{Lower triangle or full correlation matrix. n x n square matrix for n landmarks.}
@@ -13,7 +13,7 @@ EMMLi(corr, N_sample, mod, saveAs, abs = TRUE)
 
 \item{mod}{A data frame defining the models. The first column should contain the landmark names. Subsequent columns should define which landmarks are contained with which module. If a landmark should be ignored for a specific model, the element should be NA.}
 
-\item{saveAs}{A character string defining the filename and path for where to save output.}
+\item{saveAs}{A character string defining the filename and path for where to save output. If NULL, the output is not saved to file.}
 
 \item{abs}{Logical denoting whether absolute values should be used. TODO anjali}
 }
@@ -45,5 +45,8 @@ Calculates the AICc values of different models of modularity.
  EMMLi(dat, 20, mod1, file)
 
  unlink(file)
+
+ # run EMMLi without writing output
+ EMMLi(dat, 20, mod1)
 }
 
