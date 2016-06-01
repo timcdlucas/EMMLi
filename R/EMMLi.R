@@ -29,7 +29,7 @@
 #'@param N_sample The number of samples used
 #'@param mod A data frame defining the models. The first column should contain the landmark names. Subsequent columns should define which landmarks are contained with which module. If a landmark should be ignored for a specific model, the element should be NA.
 #'@param saveAs A character string defining the filename and path for where to save output. If NULL, the output is not saved to file.
-#'@param abs Logical denoting whether absolute values should be used. TODO anjali
+#'@param abs Logical denoting whether absolute values should be used.
 #'
 #'@export
 #'@return A list containing two elements. The first (results) gives the AIC results for each model.
@@ -368,6 +368,6 @@ EMMLi <- function(corr, N_sample, mod, saveAs = NULL, abs = TRUE ){
     }
   }
 
-  return(invisible(list(results = results, rho = rholist)))
+  return(list(results = results, rho = rholist))
 
 }
