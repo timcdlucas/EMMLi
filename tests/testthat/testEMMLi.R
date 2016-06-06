@@ -271,3 +271,19 @@ test_that('pprob argument works properly', {
   expect_true(length(out$rho) < length(out2$rho))
 
 })
+
+
+
+
+test_that('Macaca dataset works with EMMLi', {
+
+  x <- EMMLi(macacaCorrel, 42, macacaModels, saveAs = NULL)
+
+
+  # Some tests compared to previous runs that are in supp. mat.
+  expect_equal(unname(x$results[1:6, 4]),
+    c(-4737.7414674388,-4797.9615394801,-4795.9527651549,-4988.1904037954,-5225.6309993272,-5078.9039254507))
+
+})
+
+

@@ -45,27 +45,33 @@
 #'  set.seed(1)
 #'
 #'  # Chose a filename and directory for output
-#'  file <- paste0(tempdir(), 'EMMLiTest.csv')
+#'  dir <- tempdir()
+#'  file <- paste0(dir, 'EMMLiTest.csv')
 #'  
-#'  # Import a correlation matrix
-#'  dat <- matrix(runif(36, -1, 1), ncol = 6, nrow = 6)
-#'  diag(dat) <- 1
-#'
-#'  # Create dataframe of model definitions.
-#'  #   Use NAs indicate landmarks which are not part of the model
-#'  mod1 <- data.frame(landmarks = letters[1:6], 
-#'               modelA = rep(c(1, 2), each = 3),
-#'               modelB = rep(c(1,2), 3),
-#'               model3= c(rep(c(1,2), 2), NA, NA)) 
-#'
+#'  # Examine a correlation matrix and model dataframe
+#'  dim(macacaCorrel)
+#'  head(macacaModels)
 #'
 #'  # run EMMLi
-#'  output <- EMMLi(dat, 20, mod1, file)
+#'  output <- EMMLi(macacaCorrel, 20, macacaModels, file)
 #'
 #'  unlink(file)
 #'
 #'  # run EMMLi without writing output
-#'  output <- EMMLi(dat, 20, mod1)
+#'  output <- EMMLi(macacaCorrel, 20, macacaModels)
+#'
+#'  # Raw data example to illustrate pitfalls
+#'  corrPath <- system.file("extdata", "M1lmcorrel.csv", package = "EMMLi")
+#'  corr <- read.csv(corrPath, header = FALSE)
+#'  
+#'  modelPath <- system.file("extdata", "macaca_landmarklist.csv", package = "EMMLi")
+#'  mod <- read.csv(modelPath, header = TRUE, row.names = 1)
+#'
+#'  # First column should be character or factor. Subsequent columns integer
+#'  sapply(mod, class)
+#'
+#'  out <- EMMLi(corr, 42, mod)
+#'
 
 
 EMMLi <- function(corr, N_sample, mod, saveAs = NULL, abs = TRUE, pprob = 0.05 ){
