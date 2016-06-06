@@ -90,7 +90,7 @@ EMMLi <- function(corr, N_sample, mod, saveAs = NULL, abs = TRUE, pprob = 0.05 )
   if(!dim(corr)[1] == dim(corr)[2]) stop('corr should be a square matrix')
 
   # Check other parameters
-  stopifnot(is.numeric(N_sample), N_sample > 0, is.logical(abs))  
+  stopifnot(is.numeric(N_sample), N_sample > 0, is.logical(abs), pprob > 0, pprob < 1)  
 
   if(!is.null(saveAs)){
     stopifnot(is.character(saveAs))
