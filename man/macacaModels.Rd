@@ -4,12 +4,11 @@
 \name{macacaModels}
 \alias{macacaModels}
 \title{Models of (\emph{Macaca fuscata}) cranial modularity.}
-\format{A data frame with 61 rows (one for each landmark) and 8 coluumns.
-\describe{
-  \item{X.1}{Character vectors giving landmark names}
-  \item{Other columns}{Description of each model. Landmarks are grouped into
-    modules (integer numbered). NAs indicate landmarks that are not included in 
-    a given model.}
+\format{A data frame with 61 rows (one for each landmark) and 8 coluumns. 
+\itemize{
+ \item{X.1}{Landmark names (character or factor)}
+ \item{Other columns}{Model specification. Integers determine which module each landmark is 
+   in. NAs indicate that a landmark is not in any module.}
 }}
 \source{
 A. Goswami and J. Finarelli (2016) EMMLi: A maximum likelihood approach 
