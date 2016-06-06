@@ -59,7 +59,7 @@
 #'
 #'
 #'  # run EMMLi
-#'  EMMLi(dat, 20, mod1, file)
+#'  output <- EMMLi(dat, 20, mod1, file)
 #'
 #'  unlink(file)
 #'
@@ -67,7 +67,7 @@
 #'  EMMLi(dat, 20, mod1)
 
 
-EMMLi <- function(corr, N_sample, mod, saveAs = NULL, abs = TRUE ){
+EMMLi <- function(corr, N_sample, mod, saveAs = NULL, abs = TRUE, pprob = 0.05 ){
   
   # Check inputs
   if(!is.numeric(corr) & !is.data.frame(corr)){
@@ -347,19 +347,16 @@ EMMLi <- function(corr, N_sample, mod, saveAs = NULL, abs = TRUE ){
     
   } 
 
-  # Sort names for return value
-  rho_names = names(Post_Pob)
-  rho_names = unlist(strsplit(rho_names, split = 'mod\\$'))
-  rho_names = unlist(strsplit(rho_names, split = '1$'))
-  names(rholist) <- rho_names
-
   # build output for the csv.  
-  rho_output = rholist[which(Post_Pob > 0.01)]
+  rho_output = rholist[which(Post_Pob > pprob)]
 
-  rholist_name = names(which(Post_Pob > 0.01))
+  rholist_name = names(which(Post_Pob > pprob))
   rholist_name = unlist(strsplit(rholist_name, split = 'mod\\$'))
   rholist_name = unlist(strsplit(rholist_name, split = '1$'))
-  
+
+  return_rho <- rho_output
+  names(return_rho) <- rholist_name
+
   if(!is.null(saveAs)){
     utils::write.table(results, file = saveAs, row.names = TRUE, col.names = NA, sep = ",")
     cat("\n\n", file = saveAs, append = TRUE)
@@ -371,6 +368,6 @@ EMMLi <- function(corr, N_sample, mod, saveAs = NULL, abs = TRUE ){
     }
   }
 
-  return(invisible(list(results = results, rho = rholist)))
+  return(invisible(list(results = results, rho = return_rho)))
 
 }
