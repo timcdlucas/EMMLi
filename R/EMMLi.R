@@ -5,12 +5,14 @@
 ##       N_sample = the number of samples used to calculate the correlation matrix
 ##  					mod = landmark classification, 
 ##				 saveAs = specify where to save the results.
-##			  
+##            abs = specify whether to use absolute values of correlations
+##          pprob = specify posterior probability cutoff level for reporting of reconstructed model parameters
+##
 ##  Output: A list containing two elements. The first (results) gives the AIC results 
 ##          for each model. The second (rho) gives the within and between module correlations.
 ##          Additionally an optional .csv file, resembling the AIC worksheet. 
 ##
-##  Prabu (p.siva@ucl.ac.uk)
+##  Prabu (p.siva@ucl.ac.uk), Tim Lucas (timcdlucas@gmail.com), Anjali Goswami (a.goswami@ucl.ac.uk), John Finarelli
 #################################################################
 
 
@@ -18,7 +20,7 @@
 #' Evaluating modularity with maximum likelihood
 #'
 ####  Description    #####
-#' Calculates the AICc values of different models of modularity.
+#' Calculates the AICc values, model likelihoods, and posterior probabilities of different models of modularity, as described in Goswami and Finarelli (2016).
 #'
 ####  Details        #####
 #'  The publication describing this analysis is A. Goswami and J. Finarelli
@@ -26,10 +28,11 @@
 #'    Evolution \url{http://onlinelibrary.wiley.com/doi/10.1111/evo.12956/abstract}.
 #'
 #'@param corr Lower triangle or full correlation matrix. n x n square matrix for n landmarks.
-#'@param N_sample The number of samples used
-#'@param mod A data frame defining the models. The first column should contain the landmark names. Subsequent columns should define which landmarks are contained with which module. If a landmark should be ignored for a specific model, the element should be NA.
-#'@param saveAs A character string defining the filename and path for where to save output. If NULL, the output is not saved to file.
-#'@param abs Logical denoting whether absolute values should be used.
+#'@param N_sample The number of specimens
+#'@param mod A data frame defining the models. The first column should contain the landmark names. Subsequent columns should define which landmarks are contained within each module. If a landmark should be ignored for a specific model (i.e., it is unintegrated in any module), the element should be NA.
+#'@param saveAs A character string defining the filename and path for where to save output. If NULL, the output is not saved to file
+#'@param abs Logical denoting whether absolute values should be used. Default is TRUE, as in Goswami and Finarelli (2016)
+#'@param pprob posterior probability cutoff for reporting of models. Default is 0.05, as suggested in Goswami and Finarelli (2016)
 #'
 #'@export
 #'@return A list containing two elements. The first (results) gives the AIC results for each model.
@@ -43,7 +46,7 @@
 #'  # Chose a filename and directory for output
 #'  file <- paste0(tempdir(), 'EMMLiTest.csv')
 #'  
-#'  # Create a correlation matrix
+#'  # Import a correlation matrix
 #'  dat <- matrix(runif(36, -1, 1), ncol = 6, nrow = 6)
 #'  diag(dat) <- 1
 #'
@@ -368,6 +371,6 @@ EMMLi <- function(corr, N_sample, mod, saveAs = NULL, abs = TRUE ){
     }
   }
 
-  return(list(results = results, rho = rholist))
+  return(invisible(list(results = results, rho = rholist)))
 
 }
