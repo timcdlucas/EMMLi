@@ -368,6 +368,6 @@ EMMLi <- function(corr, N_sample, mod, saveAs = NULL, abs = TRUE, pprob = 0.05 )
     }
   }
 
-  return(invisible(list(results = results, rho = return_rho)))
+  return(list(results = results, rho = return_rho))
 
 }
