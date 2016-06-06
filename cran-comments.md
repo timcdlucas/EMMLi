@@ -1,5 +1,6 @@
 ## Test environments
 * local ubuntu 14.04 R 3.3.1 
+* local ubuntu 14.04 R devel 2016-06-06 r70717
 * win-builder R devel 2016-06-05 r70711
 * win-builder R 3.3.0 (2016-05-03)
 

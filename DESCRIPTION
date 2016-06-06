@@ -1,21 +1,19 @@
 Package: EMMLi
 Type: Package
-Title: EMMLi: A Maximum Likelihood Approach To The Analysis Of Modularity
+Title: A Maximum Likelihood Approach to the Analysis of Modularity
 Version: 0.0.1
 Date: 2016-05-31
 Author: Anjali Goswami, Tim Lucas, Prabu Sivasubramaniam, John Finarelli
 Maintainer: Tim Lucas <timcdlucas@gmail.com>
-Description: Fit models of modularity to morphlogical landmarks. Perform model 
+Description: Fit models of modularity to morphological landmarks. Perform model 
   selection on results. Fit models with a single within-module correlation or
-  with seperate within-module correlations fitted to each module.
+  with separate within-module correlations fitted to each module.
 License: MIT + file LICENSE
 Imports:
     stats,
     utils
 Suggests:
-    knitr,
     testthat
-VignetteBuilder: knitr
 LazyData: true
 URL: https://github.com/timcdlucas/EMMLi
 RoxygenNote: 5.0.1
