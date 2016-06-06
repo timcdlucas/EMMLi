@@ -250,3 +250,24 @@ test_that('EMMLi outputs correctly.', {
 
 
 
+
+
+test_that('pprob argument works properly', {
+
+  set.seed(1)
+  
+  dat <- matrix(runif(36, -1, 1), ncol = 6, nrow = 6)
+  diag(dat) <- 1
+
+  mod1 <- data.frame(landmarks = letters[1:6], 
+               modelA = rep(c(1, 2), each = 3),
+               modelB = rep(c(1,2), 3),
+               modelC = rep(c(1:3), 2)) 
+
+  
+  out <- EMMLi(dat, 20, mod1)
+  out2 <- EMMLi(dat, 20, mod1, pprob = 0.0001)
+
+  expect_true(length(out$rho) < length(out2$rho))
+
+})
