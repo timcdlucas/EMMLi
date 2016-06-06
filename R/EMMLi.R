@@ -40,6 +40,7 @@
 #'  Optionally, the output is saved to the file defined by the saveAs argument with only models with a 
 #'  posterior probability > 0.01 being saved.
 #'
+#'
 #'@examples
 #'  set.seed(1)
 #'
@@ -80,7 +81,7 @@ EMMLi <- function(corr, N_sample, mod, saveAs = NULL, abs = TRUE, pprob = 0.05 )
 
   # Test that elements in mod, after the first column, are either integers or NAs
 
-  isIntegers <- na.omit(as.vector(abs(mod[, -1] - round(mod[, -1])) < .Machine$double.eps^0.5))
+  isIntegers <- stats::na.omit(as.vector(abs(mod[, -1] - round(mod[, -1])) < .Machine$double.eps^0.5))
 
   if(!all(isIntegers)){
     stop('mod should contain landmark names in the first column and integers in subsequent columns')
@@ -368,7 +369,7 @@ EMMLi <- function(corr, N_sample, mod, saveAs = NULL, abs = TRUE, pprob = 0.05 )
     for(q in 1:length(rho_output)){
       cat(rholist_name[q], "\n", file = saveAs, append = TRUE)
       write(paste(c('', colnames(rho_output[[q]])), collapse = ','), saveAs, append = TRUE)
-      write.table(rho_output[q], saveAs, row.names = TRUE, col.names = FALSE, sep = ",", append = TRUE)
+      utils::write.table(rho_output[q], saveAs, row.names = TRUE, col.names = FALSE, sep = ",", append = TRUE)
       cat("\n", file = saveAs, append = TRUE)
     }
   }

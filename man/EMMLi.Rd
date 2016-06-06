@@ -4,18 +4,20 @@
 \alias{EMMLi}
 \title{Evaluating modularity with maximum likelihood}
 \usage{
-EMMLi(corr, N_sample, mod, saveAs = NULL, abs = TRUE)
+EMMLi(corr, N_sample, mod, saveAs = NULL, abs = TRUE, pprob = 0.05)
 }
 \arguments{
 \item{corr}{Lower triangle or full correlation matrix. n x n square matrix for n landmarks.}
 
-\item{N_sample}{The number of samples used}
+\item{N_sample}{The number of specimens}
 
-\item{mod}{A data frame defining the models. The first column should contain the landmark names. Subsequent columns should define which landmarks are contained with which module. If a landmark should be ignored for a specific model, the element should be NA.}
+\item{mod}{A data frame defining the models. The first column should contain the landmark names. Subsequent columns should define which landmarks are contained within each module. If a landmark should be ignored for a specific model (i.e., it is unintegrated in any module), the element should be NA.}
 
-\item{saveAs}{A character string defining the filename and path for where to save output. If NULL, the output is not saved to file.}
+\item{saveAs}{A character string defining the filename and path for where to save output. If NULL, the output is not saved to file}
 
-\item{abs}{Logical denoting whether absolute values should be used. TODO anjali}
+\item{abs}{Logical denoting whether absolute values should be used. Default is TRUE, as in Goswami and Finarelli (2016)}
+
+\item{pprob}{posterior probability cutoff for reporting of models. Default is 0.05, as suggested in Goswami and Finarelli (2016)}
 }
 \value{
 A list containing two elements. The first (results) gives the AIC results for each model.
@@ -24,7 +26,7 @@ A list containing two elements. The first (results) gives the AIC results for ea
  posterior probability > 0.01 being saved.
 }
 \description{
-Calculates the AICc values of different models of modularity.
+Calculates the AICc values, model likelihoods, and posterior probabilities of different models of modularity, as described in Goswami and Finarelli (2016).
 }
 \details{
 The publication describing this analysis is A. Goswami and J. Finarelli
@@ -37,7 +39,7 @@ The publication describing this analysis is A. Goswami and J. Finarelli
  # Chose a filename and directory for output
  file <- paste0(tempdir(), 'EMMLiTest.csv')
  
- # Create a correlation matrix
+ # Import a correlation matrix
  dat <- matrix(runif(36, -1, 1), ncol = 6, nrow = 6)
  diag(dat) <- 1
 
@@ -50,11 +52,11 @@ The publication describing this analysis is A. Goswami and J. Finarelli
 
 
  # run EMMLi
- EMMLi(dat, 20, mod1, file)
+ output <- EMMLi(dat, 20, mod1, file)
 
  unlink(file)
 
  # run EMMLi without writing output
- EMMLi(dat, 20, mod1)
+ output <- EMMLi(dat, 20, mod1)
 }
 
