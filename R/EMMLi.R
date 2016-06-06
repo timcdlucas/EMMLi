@@ -64,7 +64,7 @@
 #'  unlink(file)
 #'
 #'  # run EMMLi without writing output
-#'  EMMLi(dat, 20, mod1)
+#'  output <- EMMLi(dat, 20, mod1)
 
 
 EMMLi <- function(corr, N_sample, mod, saveAs = NULL, abs = TRUE, pprob = 0.05 ){
@@ -91,7 +91,12 @@ EMMLi <- function(corr, N_sample, mod, saveAs = NULL, abs = TRUE, pprob = 0.05 )
   # Check other parameters
   stopifnot(is.numeric(N_sample), N_sample > 0, is.logical(abs))  
 
-  if(!is.null(saveAs)){}
+  if(!is.null(saveAs)){
+    stopifnot(is.character(saveAs))
+    if(!grepl('\\.csv$', saveAs)){
+      warning("Output will be saved as a csv but saveAs does not end in '.csv'")
+    }
+  }
 
 
   # Create null model
