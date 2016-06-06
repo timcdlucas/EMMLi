@@ -17,5 +17,5 @@ Suggests:
     testthat
 VignetteBuilder: knitr
 LazyData: true
-URL: https://bitbucket.org/timcdlucas/emmli
+URL: https://github.com/timcdlucas/EMMLi
 RoxygenNote: 5.0.1
