@@ -1,6 +1,8 @@
 EMMLi: A Maximum Likelihood Approach To The Analysis Of Modularity
 ====================================================================
 
+[![Build Status](https://travis-ci.org/timcdlucas/EMMLi.svg)](https://travis-ci.org/timcdlucas/EMMLi)
+[![codecov.io](https://codecov.io/github/timcdlucas/EMMLi/coverage.svg?branch=master)](https://codecov.io/github/timcdlucas/EMMLi?branch=master)
 
 An R package for performing analyses of modularity on morphological landmark data.
 
