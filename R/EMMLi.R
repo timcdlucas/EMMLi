@@ -29,7 +29,7 @@
 #'
 #'@param corr Lower triangle or full correlation matrix. n x n square matrix for n landmarks.
 #'@param N_sample The number of specimens
-#'@param mod A data frame defining the models. The first column should contain the landmark names. Subsequent columns should define which landmarks are contained within each module. If a landmark should be ignored for a specific model (i.e., it is unintegrated in any module), the element should be NA.
+#'@param mod A data frame defining the models. The first column should contain the landmark names. Subsequent columns should define which landmarks are contained within each module with integers, factors or characters. If a landmark should be ignored for a specific model (i.e., it is unintegrated in any module), the element should be NA.
 #'@param saveAs A character string defining the filename and path for where to save output. If NULL, the output is not saved to file
 #'@param abs Logical denoting whether absolute values should be used. Default is TRUE, as in Goswami and Finarelli (2016)
 #'@param pprob posterior probability cutoff for reporting of models. Default is 0.05, as suggested in Goswami and Finarelli (2016)
@@ -85,14 +85,33 @@ EMMLi <- function(corr, N_sample, mod, saveAs = NULL, abs = TRUE, pprob = 0.05 )
     stop('The first column of mod should be landmark names (factor or character).')
   }
 
-  # Test that elements in mod, after the first column, are either integers or NAs
+  
 
-  isIntegers <- stats::na.omit(as.vector(abs(mod[, -1] - round(mod[, -1])) < .Machine$double.eps^0.5))
-
-  if(!all(isIntegers)){
-    stop('mod should contain landmark names in the first column and integers in subsequent columns')
+  # Make elements in mod, after the first column, integers or NAs
+  modClasses <- sapply(mod[, -1], class)
+  modClasses[modClasses == 'integer'] <- 'numeric'
+  if(!all(modClasses == 'factor') & !all(modClasses == 'numeric') & !all(modClasses == 'character')){
+    stop('mod should contain landmark names in the first column and integers, factors or character vectors in subsequent columns')
   }
 
+  # check that numerics are integers
+  if(all(modClasses == 'numeric')){
+    if(!all(sapply(mod[, -1], function(x) all(abs(x - round(x)) < .Machine$double.eps^0.5)))){
+      stop('mod should contain landmark names in the first column and integers, factors or character vectors in subsequent columns')
+    }
+  }
+
+  if(all(modClasses == 'factor')){
+    mod[, -1] <- sapply(mod[, -1], function(x) as.numeric(x))
+  }
+
+
+  if(all(modClasses == 'character')){
+    mod[, -1] <- sapply(mod[, -1], function(x) as.numeric(factor(x)))
+  }
+    
+
+  # Check corr
   if(!dim(corr)[1] == dim(corr)[2]) stop('corr should be a square matrix')
 
   # Check other parameters
@@ -383,3 +402,5 @@ EMMLi <- function(corr, N_sample, mod, saveAs = NULL, abs = TRUE, pprob = 0.05 )
   return(list(results = results, rho = return_rho))
 
 }
+
+

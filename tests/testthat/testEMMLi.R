@@ -287,3 +287,61 @@ test_that('Macaca dataset works with EMMLi', {
 })
 
 
+
+
+
+
+test_that('EMMLi can take mod as character, factor or integer', {
+
+  set.seed(1)
+  
+  dat <- matrix(runif(36, -1, 1), ncol = 6, nrow = 6)
+  diag(dat) <- 1
+
+  mod1 <- data.frame(landmarks = letters[1:6], 
+               modelA = rep(c(1, 2), each = 3),
+               modelB = rep(c(1,2), 3),
+               modelC = rep(c(1:3), 2)) 
+
+
+  mod2 <- data.frame(landmarks = letters[1:6], 
+               modelA = rep(letters[1:2], each = 3),
+               modelB = rep(letters[1:2], 3),
+               modelC = rep(letters[1:3], 2)) 
+
+
+  mod3 <- data.frame(landmarks = letters[1:6], 
+               modelA = factor(rep(letters[1:2], each = 3)),
+               modelB = factor(rep(letters[1:2], 3)),
+               modelC = factor(rep(letters[1:3], 2))) 
+  
+  out <- EMMLi(dat, 20, mod1)
+  out2 <- EMMLi(dat, 20, mod2)
+  out3 <- EMMLi(dat, 20, mod3)
+
+  expect_equal(out, out2)
+  expect_equal(out2, out3)
+
+})
+
+
+
+
+test_that('EMMLi errors if mod is a mix of integers and factors', {
+
+  set.seed(1)
+  
+  dat <- matrix(runif(36, -1, 1), ncol = 6, nrow = 6)
+  diag(dat) <- 1
+
+  mod1 <- data.frame(landmarks = letters[1:6], 
+               modelA = factor(rep(c(1, 2), each = 3)),
+               modelB = rep(c(1,2), 3),
+               modelC = rep(c(1:3), 2)) 
+
+
+
+  expect_error(EMMLi(dat, 20, mod1))
+
+})
+
