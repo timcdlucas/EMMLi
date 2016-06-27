@@ -345,3 +345,39 @@ test_that('EMMLi errors if mod is a mix of integers and factors', {
 
 })
 
+
+
+
+test_that('EMMLi can take mod as character or factor with na', {
+
+  set.seed(1)
+  
+  dat <- matrix(runif(49, -1, 1), ncol = 7, nrow = 7)
+  diag(dat) <- 1
+
+  mod1 <- data.frame(landmarks = letters[1:7], 
+               modelA = c(rep(c(1, 2), each = 3), NA),
+               modelB = c(rep(c(1, 2), times = 3), NA),
+               modelC = c(rep(c(1:3), 2), NA)) 
+
+
+  mod2 <- data.frame(landmarks = letters[1:7], 
+               modelA = c(rep(letters[1:2], each = 3), NA),
+               modelB = c(rep(letters[1:2], times = 3), NA),
+               modelC = c(rep(letters[1:3], 2), NA)) 
+
+
+  mod3 <- data.frame(landmarks = letters[1:7], 
+               modelA = factor(c(rep(letters[1:2], each = 3), NA)),
+               modelB = factor(c(rep(letters[1:2], times = 3), NA)),
+               modelC = factor(c(rep(letters[1:3], 2), NA))) 
+  
+  out <- EMMLi(dat, 20, mod1)
+  out2 <- EMMLi(dat, 20, mod2)
+  out3 <- EMMLi(dat, 20, mod3)
+
+  expect_equal(out, out2)
+  expect_equal(out2, out3)
+
+})
+
