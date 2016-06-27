@@ -96,7 +96,7 @@ EMMLi <- function(corr, N_sample, mod, saveAs = NULL, abs = TRUE, pprob = 0.05 )
 
   # check that numerics are integers
   if(all(modClasses == 'numeric')){
-    if(!all(sapply(mod[, -1], function(x) all(abs(x - round(x)) < .Machine$double.eps^0.5)))){
+    if(!all(sapply(mod[, -1], function(x) all(abs(na.omit(x) - round(na.omit(x))) < .Machine$double.eps^0.5)))){
       stop('mod should contain landmark names in the first column and integers, factors or character vectors in subsequent columns')
     }
   }
