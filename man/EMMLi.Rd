@@ -11,7 +11,7 @@ EMMLi(corr, N_sample, mod, saveAs = NULL, abs = TRUE, pprob = 0.05)
 
 \item{N_sample}{The number of specimens}
 
-\item{mod}{A data frame defining the models. The first column should contain the landmark names. Subsequent columns should define which landmarks are contained within each module. If a landmark should be ignored for a specific model (i.e., it is unintegrated in any module), the element should be NA.}
+\item{mod}{A data frame defining the models. The first column should contain the landmark names. Subsequent columns should define which landmarks are contained within each module with integers, factors or characters. If a landmark should be ignored for a specific model (i.e., it is unintegrated in any module), the element should be NA.}
 
 \item{saveAs}{A character string defining the filename and path for where to save output. If NULL, the output is not saved to file}
 
