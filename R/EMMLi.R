@@ -215,15 +215,16 @@ EMMLi <- function(corr, N_sample, mod, saveAs = NULL, abs = TRUE, pprob = 0.05 )
       # Calculate z_r differently depending on abs argument in original call.
       if(abs){
         z_r = 0.5 * log((1 + abs(r)) / (1 - abs(r)))
+        #rho
+        p = seq(0, 0.99, 0.01) 
       } else if(!abs) {
         z_r = 0.5 * log((1 + r) / (1 - r))
+        #rho
+        p = seq(-0.99, 0.99, 0.01) 
       }
       n = N_sample 
       var = 1 / (n - 3)
-      
-      #rho
-      p = seq(0, 0.99, 0.01) 
-
+     
       #zeta
       z_p = 0.5 * log((1 + p)/(1 - p)) 
       
